@@ -1,16 +1,16 @@
 package ru.zubov.licensingservice.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.zubov.licensingservice.model.License;
 import ru.zubov.licensingservice.service.LicenseService;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping(value = "v1/organization/{organizationId}/license")
 public class LicenseController {
-    @Autowired
-    private LicenseService licenseService;
+    private final LicenseService licenseService;
 
     @RequestMapping(value = "/{licenseId}", method = RequestMethod.GET)
     public ResponseEntity<License> getLicense(@PathVariable("organizationId") String organizationId,
