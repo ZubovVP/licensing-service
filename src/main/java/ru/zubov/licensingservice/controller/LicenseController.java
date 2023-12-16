@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.*;
 import ru.zubov.licensingservice.model.License;
 import ru.zubov.licensingservice.service.LicenseService;
 
+import java.util.Locale;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(value = "v1/organization/{organizationId}/license")
@@ -27,8 +29,9 @@ public class LicenseController {
 
     @PostMapping
     public ResponseEntity<String> createLicense(@PathVariable("organizationId") String organizationId,
-                                                @RequestBody License request) {
-        return ResponseEntity.ok(licenseService.createLicense(request, organizationId));
+                                                @RequestBody License request,
+                                                @RequestHeader(value = "Accept-Language", required = false) Locale locale) {
+        return ResponseEntity.ok(licenseService.createLicense(request, organizationId, locale));
     }
 
     @DeleteMapping(value = "/{licenseId}")
