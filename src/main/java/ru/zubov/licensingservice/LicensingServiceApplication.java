@@ -12,23 +12,23 @@ import java.util.Locale;
 @SpringBootApplication
 public class LicensingServiceApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(LicensingServiceApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(LicensingServiceApplication.class, args);
+    }
 
-	@Bean
-	public LocaleResolver localeResolver() {
-		SessionLocaleResolver localeResolver = new SessionLocaleResolver();
-		localeResolver.setDefaultLocale(Locale.US);
-		return localeResolver;
-	}
+    @Bean
+    public LocaleResolver localeResolver() {
+        SessionLocaleResolver localeResolver = new SessionLocaleResolver();
+        localeResolver.setDefaultLocale(Locale.US);
+        return localeResolver;
+    }
 
-	@Bean
-	public ResourceBundleMessageSource messageSource() {
-		ResourceBundleMessageSource messageSource =
-				new ResourceBundleMessageSource();
-		messageSource.setUseCodeAsDefaultMessage(true);
-		messageSource.setBasenames("messages");
-		return messageSource;
-	}
+    @Bean
+    public ResourceBundleMessageSource messageSource() {
+        ResourceBundleMessageSource messageSource =
+                new ResourceBundleMessageSource();
+        messageSource.setUseCodeAsDefaultMessage(true);
+        messageSource.setBasenames("messages");
+        return messageSource;
+    }
 }
