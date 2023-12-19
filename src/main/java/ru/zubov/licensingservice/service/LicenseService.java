@@ -35,22 +35,22 @@ public class LicenseService {
         return responseMessage;
     }
 
-    public String updateLicense(License license, String organizationId) {
+    public String updateLicense(License license, String organizationId, Locale locale) {
         String responseMessage = null;
         if (license != null) {
             license.setOrganizationId(organizationId);
             responseMessage = String.format(messages.getMessage(
-                            "license.update.message", null, null),
+                            "license.update.message", null, locale),
                     license);
         }
         return responseMessage;
     }
 
-    public String deleteLicense(String licenseId, String organizationId) {
+    public String deleteLicense(String licenseId, String organizationId, Locale locale) {
         String responseMessage;
-        responseMessage = String.format(
-                "Deleting license with id %s for the organization %s",
-                licenseId, organizationId);
-        return responseMessage;
+
+        responseMessage = String.format(messages.getMessage(
+                        "license.delete.message", null, locale), licenseId, organizationId);
+         return responseMessage;
     }
 }
