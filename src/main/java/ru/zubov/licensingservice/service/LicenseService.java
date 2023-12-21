@@ -25,32 +25,26 @@ public class LicenseService {
     }
 
     public String createLicense(License license, String organizationId, Locale locale) {
-        String responseMessage = null;
-        if (license != null) {
-            license.setOrganizationId(organizationId);
-            responseMessage = String.format(messages.getMessage(
-                            "license.create.message", null, locale),
-                    license);
-        }
-        return responseMessage;
+        return getResponseMessage(license, organizationId, locale, "license.create.message");
     }
 
     public String updateLicense(License license, String organizationId, Locale locale) {
+        return getResponseMessage(license, organizationId, locale, "license.update.message");
+    }
+
+    public String deleteLicense(String licenseId, String organizationId, Locale locale) {
+         return String.format(messages.getMessage(
+                 "license.delete.message", null, locale), licenseId, organizationId);
+    }
+
+    private String getResponseMessage(License license, String organizationId, Locale locale, String nameOperation) {
         String responseMessage = null;
         if (license != null) {
             license.setOrganizationId(organizationId);
             responseMessage = String.format(messages.getMessage(
-                            "license.update.message", null, locale),
+                            nameOperation, null, locale),
                     license);
         }
         return responseMessage;
-    }
-
-    public String deleteLicense(String licenseId, String organizationId, Locale locale) {
-        String responseMessage;
-
-        responseMessage = String.format(messages.getMessage(
-                        "license.delete.message", null, locale), licenseId, organizationId);
-         return responseMessage;
     }
 }
