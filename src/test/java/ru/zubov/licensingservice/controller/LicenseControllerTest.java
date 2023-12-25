@@ -25,10 +25,8 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doCallRealMethod;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(LicenseController.class)
 @ExtendWith(SpringExtension.class)
@@ -71,7 +69,26 @@ class LicenseControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Accept-Language", locale)
                         .content(asJsonString(license)))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(content().string("Good!"));
+    }
+
+    @Test
+    public void createLicenseTest() throws Exception {
+        String organizationId = "organizationId";
+        String licenseId = "licenseId";
+        License license = new License();
+        license.setLicenseId(licenseId);
+        license.setOrganizationId(organizationId);
+        Locale locale = new Locale("ru");
+
+        when(licenseService.createLicense(any(), any(), any())).thenReturn("Good!");
+        mvc.perform(post("/v1/organization/{organizationId}/license", organizationId)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("Accept-Language", locale)
+                        .content(asJsonString(license)))
+                .andExpect(status().isOk())
+                .andExpect(content().string("Good!"));
     }
 
     public static String asJsonString(final Object obj) {
