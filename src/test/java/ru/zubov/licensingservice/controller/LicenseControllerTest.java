@@ -91,6 +91,24 @@ class LicenseControllerTest {
                 .andExpect(content().string("Good!"));
     }
 
+    @Test
+    public void deleteLicenseTest() throws Exception {
+        String organizationId = "organizationId";
+        String licenseId = "licenseId";
+        License license = new License();
+        license.setLicenseId(licenseId);
+        license.setOrganizationId(organizationId);
+        Locale locale = new Locale("ru");
+
+        when(licenseService.deleteLicense(licenseId, organizationId, locale)).thenReturn("Good!");
+        mvc.perform(delete("/v1/organization/{organizationId}/license/{licenseId}", organizationId, licenseId)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("Accept-Language", locale)
+                        .content(asJsonString(license)))
+                .andExpect(status().isOk())
+                .andExpect(content().string("Good!"));
+    }
+
     public static String asJsonString(final Object obj) {
         try {
             return new ObjectMapper().writeValueAsString(obj);
