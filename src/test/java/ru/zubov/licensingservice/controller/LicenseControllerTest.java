@@ -1,6 +1,5 @@
 package ru.zubov.licensingservice.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -10,20 +9,15 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.MessageSource;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import ru.zubov.licensingservice.TestUtils;
 import ru.zubov.licensingservice.model.License;
 import ru.zubov.licensingservice.service.LicenseService;
 
-import java.util.List;
 import java.util.Locale;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.doCallRealMethod;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -68,7 +62,7 @@ class LicenseControllerTest {
         mvc.perform(put("/v1/organization/{organizationId}/license", organizationId)
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Accept-Language", locale)
-                        .content(asJsonString(license)))
+                        .content(TestUtils.asJsonString(license)))
                 .andExpect(status().isOk())
                 .andExpect(content().string("Good!"));
     }
@@ -86,7 +80,7 @@ class LicenseControllerTest {
         mvc.perform(post("/v1/organization/{organizationId}/license", organizationId)
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Accept-Language", locale)
-                        .content(asJsonString(license)))
+                        .content(TestUtils.asJsonString(license)))
                 .andExpect(status().isOk())
                 .andExpect(content().string("Good!"));
     }
@@ -104,18 +98,8 @@ class LicenseControllerTest {
         mvc.perform(delete("/v1/organization/{organizationId}/license/{licenseId}", organizationId, licenseId)
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Accept-Language", locale)
-                        .content(asJsonString(license)))
+                        .content(TestUtils.asJsonString(license)))
                 .andExpect(status().isOk())
                 .andExpect(content().string("Good!"));
     }
-
-    public static String asJsonString(final Object obj) {
-        try {
-            return new ObjectMapper().writeValueAsString(obj);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-
 }
