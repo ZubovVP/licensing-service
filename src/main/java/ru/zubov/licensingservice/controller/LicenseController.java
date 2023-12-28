@@ -1,6 +1,7 @@
 package ru.zubov.licensingservice.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.zubov.licensingservice.model.License;
@@ -47,13 +48,14 @@ public class LicenseController {
     public ResponseEntity<String> createLicense(@PathVariable("organizationId") String organizationId,
                                                 @RequestBody License request,
                                                 @RequestHeader(value = "Accept-Language", required = false) Locale locale) {
-        return ResponseEntity.ok(licenseService.createLicense(request, organizationId, locale));
+        return new ResponseEntity<>(licenseService.createLicense(request, organizationId, locale), HttpStatus.CREATED);
+
     }
 
     @DeleteMapping(value = "/{licenseId}")
     public ResponseEntity<String> deleteLicense(@PathVariable("organizationId") String organizationId,
                                                 @PathVariable("licenseId") String licenseId,
                                                 @RequestHeader(value = "Accept-Language", required = false) Locale locale) {
-        return ResponseEntity.ok(licenseService.deleteLicense(licenseId, organizationId, locale));
+        return new ResponseEntity<>(licenseService.deleteLicense(licenseId, organizationId, locale), HttpStatus.NO_CONTENT);
     }
 }

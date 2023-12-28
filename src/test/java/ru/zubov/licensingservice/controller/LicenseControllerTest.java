@@ -81,7 +81,7 @@ class LicenseControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Accept-Language", locale)
                         .content(TestUtils.asJsonString(license)))
-                .andExpect(status().isOk())
+                .andExpect(status().isCreated())
                 .andExpect(content().string("Good!"));
     }
 
@@ -99,7 +99,7 @@ class LicenseControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Accept-Language", locale)
                         .content(TestUtils.asJsonString(license)))
-                .andExpect(status().isOk())
+                .andExpect(status().isNoContent())
                 .andExpect(content().string("Good!"));
     }
 }
