@@ -41,9 +41,7 @@ public class LicenseService {
         String responseMessage = null;
         if (license != null) {
             license.setOrganizationId(organizationId);
-            responseMessage = String.format(messages.getMessage(
-                            nameOperation, null, locale),
-                    license);
+            responseMessage = String.format(messages.getMessage(nameOperation, null, locale), license);
         }
         return responseMessage;
     }
