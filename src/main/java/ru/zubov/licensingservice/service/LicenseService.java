@@ -1,48 +1,53 @@
 package ru.zubov.licensingservice.service;
 
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
+import ru.zubov.licensingservice.config.ServiceConfig;
 import ru.zubov.licensingservice.model.License;
+import ru.zubov.licensingservice.repository.LicenseRepository;
 
-import java.util.Locale;
-import java.util.Random;
+import java.util.UUID;
 
 @Service
-@RequiredArgsConstructor
 public class LicenseService {
-    private final MessageSource messages;
+    @Autowired
+    private MessageSource messages;
+    @Autowired
+    private LicenseRepository licenseRepository;
+    @Autowired
+    private ServiceConfig config;
 
     public License getLicense(String licenseId, String organizationId) {
-        License license = new License();
-        license.setId(new Random().nextInt(1000));
-        license.setLicenseId(licenseId);
-        license.setOrganizationId(organizationId);
-        license.setDescription("Software product");
-        license.setProductName("Ostock");
-        license.setLicenseType("full");
-        return license;
-    }
-
-    public String createLicense(License license, String organizationId, Locale locale) {
-        return getResponseMessage(license, organizationId, locale, "license.create.message");
-    }
-
-    public String updateLicense(License license, String organizationId, Locale locale) {
-        return getResponseMessage(license, organizationId, locale, "license.update.message");
-    }
-
-    public String deleteLicense(String licenseId, String organizationId, Locale locale) {
-         return String.format(messages.getMessage(
-                 "license.delete.message", null, locale), licenseId, organizationId);
-    }
-
-    private String getResponseMessage(License license, String organizationId, Locale locale, String nameOperation) {
-        String responseMessage = null;
-        if (license != null) {
-            license.setOrganizationId(organizationId);
-            responseMessage = String.format(messages.getMessage(nameOperation, null, locale), license);
+        License license = licenseRepository
+                .findByOrganizationIdAndLicenseId(organizationId, licenseId);
+        if (null == license) {
+            throw new IllegalArgumentException(
+                    String.format(messages.getMessage(
+                                    "license.search.error.message", null, null),
+                            licenseId, organizationId));
         }
+        return license.withComment(config.getProperty());
+    }
+
+    public License createLicense(License license) {
+        license.setLicenseId(UUID.randomUUID().toString());
+        licenseRepository.save(license);
+        return license.withComment(config.getProperty());
+    }
+
+    public License updateLicense(License license) {
+        licenseRepository.save(license);
+        return license.withComment(config.getProperty());
+    }
+
+    public String deleteLicense(String licenseId) {
+        String responseMessage;
+        License license = new License();
+        license.setLicenseId(licenseId);
+        licenseRepository.delete(license);
+        responseMessage = String.format(messages.getMessage(
+                "license.delete.message", null, null), licenseId);
         return responseMessage;
     }
 }
