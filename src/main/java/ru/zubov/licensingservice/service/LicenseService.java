@@ -7,6 +7,7 @@ import ru.zubov.licensingservice.config.ServiceConfig;
 import ru.zubov.licensingservice.model.License;
 import ru.zubov.licensingservice.repository.LicenseRepository;
 
+import java.util.Locale;
 import java.util.UUID;
 
 @Service
@@ -30,24 +31,29 @@ public class LicenseService {
         return license.withComment(config.getProperty());
     }
 
-    public License createLicense(License license) {
+    public License createLicense(License license, Locale locale) {
         license.setLicenseId(UUID.randomUUID().toString());
         licenseRepository.save(license);
-        return license.withComment(config.getProperty());
+
+        license.withComment(String.format(messages.getMessage(
+                "license.create.message", null, locale), license.getLicenseId()));
+        return license;
+        //        return license.withComment(config.getProperty());
     }
 
-    public License updateLicense(License license) {
+    public License updateLicense(License license, Locale locale) {
         licenseRepository.save(license);
+        license.withComment(String.format(messages.getMessage(
+                "license.update.message", null, locale), license.getLicenseId()));
         return license.withComment(config.getProperty());
     }
 
-    public String deleteLicense(String licenseId) {
-        String responseMessage;
+    public License deleteLicense(String licenseId, Locale locale) {
         License license = new License();
         license.setLicenseId(licenseId);
         licenseRepository.delete(license);
-        responseMessage = String.format(messages.getMessage(
-                "license.delete.message", null, null), licenseId);
-        return responseMessage;
+        license.withComment(String.format(messages.getMessage(
+                        "license.delete.message", null, locale), licenseId));
+        return license;
     }
 }
