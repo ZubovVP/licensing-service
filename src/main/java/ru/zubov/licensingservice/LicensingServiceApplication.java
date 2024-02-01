@@ -13,8 +13,8 @@ import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 import java.util.Locale;
 
 @SpringBootApplication(exclude = {DataSourceAutoConfiguration.class })
-@EnableJpaRepositories
 @RefreshScope
+@EnableJpaRepositories(basePackages="ru.zubov.licensingservice", entityManagerFactoryRef="emf")
 public class LicensingServiceApplication {
 
     public static void main(String[] args) {
