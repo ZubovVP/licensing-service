@@ -6,3 +6,7 @@ spring:
   cloud:
     config:
       uri: http://localhost:8071
+
+management:
+  security:
+    enabled: false
