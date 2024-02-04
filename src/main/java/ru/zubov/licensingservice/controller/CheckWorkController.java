@@ -25,6 +25,9 @@ public class CheckWorkController {
     @Value("${spring.datasource.password}")
     private String password;
 
+    @Value("${example.property}")
+    private String property;
+
     @Autowired
     private DataSource dataSource;
 
@@ -34,7 +37,8 @@ public class CheckWorkController {
         String configInfo = "<br/>spring.datasource.driver-class-name=" + driverClassName
                 + "<br/>spring.datasource.url=" + url
                 + "<br/>spring.datasource.username=" + userName
-                + "<br/>spring.datasource.password=" + password;
+                + "<br/>spring.datasource.password=" + password
+                + "<br/>example.property=" + property;
 
         return configInfo;
     }
