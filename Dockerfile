@@ -1,5 +1,5 @@
 # Базовый образ, содержащий среду Java времени выполнения
-FROM openjdk:17
+FROM openjdk:21
 
 # Добавить информацию о владельце
 LABEL maintainer="Zubov Vitaly <zubov.vp@yandex.ru>"
