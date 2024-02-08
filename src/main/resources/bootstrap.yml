@@ -2,7 +2,7 @@ spring:
   application:
     name: licensing-service
   profiles:
-    active: dev
+    active: test             # тут указывается тот профиль (dev/test), на котором будет собираться проект(в зависимости от профиля подтягиваются разные настройки)
   cloud:
     config:
       uri: http://localhost:8071
