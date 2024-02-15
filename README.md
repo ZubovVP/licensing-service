@@ -10,7 +10,7 @@ Java(21), Spring Boot(3.2.0).
 Далее необходимо выполнить команду  
 **mvn package dockerfile:build**  
 Для проверки существующих образов можно выполнить команду  
-**docker image**  
+**docker images**  
 , которая в таблице выведет существующие образы:  
 ![img.png](images.png)
 
