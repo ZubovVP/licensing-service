@@ -10,7 +10,18 @@ ARG JAR_FILE
 # Добавить файл jar приложения в контейнер
 COPY ${JAR_FILE} app.jar
 
-#EXPOSE 8080
+RUN mkdir -p target/dependency && (cd target/dependency; jar -xf /app.jar)
+
+FROM openjdk:21
+
+#Add volume pointing to /tmp
+VOLUME /tmp
+
+#Copy unpackaged application to new container
+ARG DEPENDENCY=/target/dependency
+COPY --from=build ${DEPENDENCY}/BOOT-INF/lib /app/lib
+COPY --from=build ${DEPENDENCY}/META-INF /app/META-INF
+COPY --from=build ${DEPENDENCY}/BOOT-INF/classes /app
 
 # запустить приложение
-ENTRYPOINT ["java","-jar","/app.jar"]
+ENTRYPOINT ["java","-cp","app:app/lib/*","ru.zubov.licensingservice.LicensingServiceApplication"]
